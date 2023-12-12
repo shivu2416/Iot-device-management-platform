@@ -1,0 +1,20 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.demo-app {
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+  
+  .demo-app-top {
+    margin: 0 0 3em;
+  }
+  
+  .demo-app-calendar {
+    margin: 0 auto;
+    max-width: 900px;
+  }
+  .react-datepicker-wrapper{
+    width: 100%;
+  }
