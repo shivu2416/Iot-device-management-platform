@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  web:
+    stdin_open: true
+    tty: true
+    container_name: django
+    build: ./iot-management-platform
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./iot-management-platform:/app
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+      - timescale
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm start
+
+  db:
+    container_name: db-dev-db
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: "betterwork"
+      POSTGRES_USER: "betterwork"
+      POSTGRES_DB: "testing"
+
+  timescale:
+    image: timescale/timescaledb:latest-pg12
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+    environment:
+      # TIMESCALEDB_TELEMETRY: "off"
+      POSTGRES_DB: ${TIMESCALE_DB}
+      POSTGRES_USER: ${TIMESCALE_USER}
+      POSTGRES_PASSWORD: ${TIMESCALE_USER}
+
+volumes:
+  postgres_data:
+  timescale_data:
